@@ -9,6 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 
+import java.io.BufferedReader;
+import java.io.InputStreamReader;
+
 public class MainActivity extends AppCompatActivity {
 
     @Override
@@ -46,6 +49,30 @@ public class MainActivity extends AppCompatActivity {
         @Override
         protected Void doInBackground(String... target) {
             Log.d("Network Task", "Attempting to ping: " + target[0]);
+
+            // A try catch to handle ping exceptions
+            try {
+                // Open a process to ping the target
+                Process p = Runtime.getRuntime().exec("ping " + target[0]);
+                // Read it's output
+                BufferedReader inputStream = new BufferedReader(
+                        new InputStreamReader(p.getInputStream()));
+
+                // Put the output in log file, will later be parsed...
+                String output = "";
+                for (int i=0; i<5; i++) {
+                    output = inputStream.readLine();
+                    Log.d("Network Task", "Ping output: " + output);
+                }
+
+                // Kill the process
+                p.destroy();
+
+            } catch (Exception e) {
+                Log.d("Network Task", "PING EXCEPTION: " + e);
+            }
+
+            // Why do I need this, even though this is a Void method?
             return null;
         }
     }
