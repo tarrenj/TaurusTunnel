@@ -3,4 +3,7 @@
 
     <string name="body_text">Lorem Ipsum</string>
     <string name="button_string">Ping!</string>
+
+    <string name="localhost">127.0.0.1</string>
+    <string name="server">192.168.1.1</string>
 </resources>
