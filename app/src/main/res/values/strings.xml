@@ -4,5 +4,6 @@
     <string name="bluetooth_button_string">Bluetooth</string>
     <string name="ping_button_string">Ping!</string>
     <string name="server_address_hint">Server address</string>
+
     <string name="body_text">No response yet</string>
 </resources>

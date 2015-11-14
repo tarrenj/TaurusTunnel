@@ -13,6 +13,7 @@ import android.util.Log;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.Date;
 
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
@@ -82,8 +83,9 @@ public class MainActivity extends AppCompatActivity {
         if (networkInfo != null && networkInfo.isConnected()) {
             // We have an active network connection
             // Create another thread for network stuff
-            new NetworkTask().execute(target);
-
+            NetworkTask NetTask = new NetworkTask();
+            // Execute the ping
+            NetTask.execute(target);
         } else {
             // No active network connection
             Log.d("Network connection", "Network connection isn't active");
@@ -91,36 +93,33 @@ public class MainActivity extends AppCompatActivity {
     }
 
     // A new class for network stuff thread
-    private class NetworkTask extends AsyncTask<String, Void, Void> {
+    private class NetworkTask extends AsyncTask<String, Void, Boolean> {
 
         @Override
-        protected Void doInBackground(String... target) {
+        protected Boolean doInBackground(String... target) {
             Log.d("NETWORK THREAD", "Attempting to ping: " + target[0]);
 
             // A try catch to handle ping exceptions
             try {
                 // Open a process to ping the target
-                Process p = Runtime.getRuntime().exec("ping " + target[0]);
-                // Read it's output
-                BufferedReader inputStream = new BufferedReader(
-                        new InputStreamReader(p.getInputStream()));
-
-                // Put the output in log file, will later be parsed...
-                String output = "";
-                for (int i=0; i<5; i++) {
-                    output = inputStream.readLine();
-                    Log.d("NETWORK THREAD", "Ping output: " + output);
+                Process ping = Runtime.getRuntime().exec("ping -c 4 " + target[0]);
+                ping.waitFor();
+                if (ping.exitValue() == 0) {
+                    return true;
                 }
-
-                // Kill the process
-                p.destroy();
-
+                else {
+                    return false;
+                }
             } catch (Exception e) {
                 Log.d("NETWORK THREAD", "PING EXCEPTION: " + e);
+                return false;
             }
+        }
 
-            // Why do I need this, even though this is a Void method?
-            return null;
+        @Override
+        protected void onPostExecute(Boolean result) {
+            TextView result_view = (TextView)findViewById(R.id.body_text);
+            result_view.setText("Ping result: " + result);
         }
     }
 
