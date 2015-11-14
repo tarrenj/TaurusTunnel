@@ -5,7 +5,4 @@
     <string name="ping_button_string">Ping!</string>
     <string name="server_address_hint">Server address</string>
     <string name="body_text">No response yet</string>
-
-    <string name="localhost">127.0.0.1</string>
-    <string name="server">192.168.1.1</string>
 </resources>

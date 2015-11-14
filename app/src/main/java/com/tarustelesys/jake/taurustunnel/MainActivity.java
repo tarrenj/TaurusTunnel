@@ -1,9 +1,12 @@
 package com.tarustelesys.jake.taurustunnel;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.os.AsyncTask;
+import android.preference.Preference;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -12,17 +15,21 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import android.view.View;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import android.view.KeyEvent;
 import android.widget.TextView;
-import android.view.View.OnKeyListener;
 
 public class MainActivity extends AppCompatActivity {
 
     // Initialize variables
     private EditText givenText;
+    private String target = "127.0.0.1";
+
+    SharedPreferences prefs;
+    SharedPreferences.Editor editor;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,7 +37,12 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         // Instantiate the key listener for the server_address text box
         server_address_listener();
+
+        prefs = PreferenceManager.getDefaultSharedPreferences(this);
+        editor = prefs.edit();
     }
+
+
 
     // A key listener to watch the server_text box
     public void server_address_listener() {
@@ -43,10 +55,16 @@ public class MainActivity extends AppCompatActivity {
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 // Hide the soft keyboard
                 InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
-                in.hideSoftInputFromWindow(givenText.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
-
-                Log.d("UI EVENT", "Server address: " + givenText.getText());
-                return true;
+                in.hideSoftInputFromWindow(givenText.getApplicationWindowToken(), InputMethodManager.HIDE_NOT_ALWAYS);
+                // Do the things
+                if (actionId == EditorInfo.IME_ACTION_DONE) {
+                    target = givenText.getText().toString();
+                    return true;
+                }
+                else {
+                    Log.d("UI EVENT", "Server address using wrong actionID");
+                    return false;
+                }
             }
         });
     }
@@ -62,11 +80,9 @@ public class MainActivity extends AppCompatActivity {
                 getSystemService(Context.CONNECTIVITY_SERVICE);
         NetworkInfo networkInfo = ConMgr.getActiveNetworkInfo();
         if (networkInfo != null && networkInfo.isConnected()) {
-            // Active network connection
-            Log.d("Network connection", "Network connection is active");
+            // We have an active network connection
             // Create another thread for network stuff
-            //new NetworkTask().execute(R.string.localhost);
-            new NetworkTask().execute("127.0.0.1");
+            new NetworkTask().execute(target);
 
         } else {
             // No active network connection
