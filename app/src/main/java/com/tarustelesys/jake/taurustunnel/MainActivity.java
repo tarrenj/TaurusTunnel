@@ -12,6 +12,7 @@ import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
 import android.view.View;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.EditText;
 
 import android.view.KeyEvent;
@@ -40,6 +41,10 @@ public class MainActivity extends AppCompatActivity {
         givenText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                // Hide the soft keyboard
+                InputMethodManager in = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                in.hideSoftInputFromWindow(givenText.getApplicationWindowToken(),InputMethodManager.HIDE_NOT_ALWAYS);
+
                 Log.d("UI EVENT", "Server address: " + givenText.getText());
                 return true;
             }
