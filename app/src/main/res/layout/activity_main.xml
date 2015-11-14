@@ -11,7 +11,8 @@
         android:layout_height="wrap_content"
         android:layout_alignParentTop="true"
         android:hint="@string/server_address_hint"
-        android:imeOptions="actionDone">
+        android:inputType="numberDecimal"
+        android:imeOptions="actionDone" >
         <requestFocus />
     </EditText>
 
