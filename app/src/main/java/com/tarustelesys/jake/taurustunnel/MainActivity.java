@@ -11,13 +11,12 @@ import android.util.Log;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
-import android.view.KeyEvent;
 import android.view.View;
 import android.widget.EditText;
-import android.view.View.OnKeyListener;
 
+import android.view.KeyEvent;
 import android.widget.TextView;
-
+import android.view.View.OnKeyListener;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -34,33 +33,19 @@ public class MainActivity extends AppCompatActivity {
 
     // A key listener to watch the server_text box
     public void server_address_listener() {
-        // Get the entered text
-        givenText = (EditText) findViewById(R.id.server_address);
-        givenText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-            @Override
-            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                Log.d("UI EVENT", "Server address: " + givenText.getText());
-                return true;
-            }
-        });
+        //throw new Error("Things are happening");
+          // Get the entered text
+          givenText = (EditText) findViewById(R.id.server_address);
+        Log.d("UI EVENT", "server_address_listener called: " + givenText.getText());
+          givenText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+              @Override
+              public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                  Log.d("UI EVENT", "Server address: " + givenText.getText());
+                  return true;
+              }
+          });
     }
 
-//    public void server_text_listener() {
-//        // Get the entered text
-//        givenText = (EditText) findViewById(R.id.server_address);
-//
-//        // Create a key listener  Fucking callbacks!!!
-//        givenText.setOnKeyListener(new OnKeyListener() {
-//            public boolean onKey(View v, int keyCode, KeyEvent event) {
-//                // If enter
-//                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
-//                    Log.d("UI EVENT", "Server address: " + givenText.getText());
-//                    return true;
-//                }
-//                return false;
-//            }
-//        });
-//    }
 
     // A simple method to test to make sure my button is working..
     public void test_button(View view) {
@@ -90,7 +75,7 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         protected Void doInBackground(String... target) {
-            Log.d("Network Task", "Attempting to ping: " + target[0]);
+            Log.d("NETWORK THREAD", "Attempting to ping: " + target[0]);
 
             // A try catch to handle ping exceptions
             try {
@@ -104,14 +89,14 @@ public class MainActivity extends AppCompatActivity {
                 String output = "";
                 for (int i=0; i<5; i++) {
                     output = inputStream.readLine();
-                    Log.d("Network Task", "Ping output: " + output);
+                    Log.d("NETWORK THREAD", "Ping output: " + output);
                 }
 
                 // Kill the process
                 p.destroy();
 
             } catch (Exception e) {
-                Log.d("Network Task", "PING EXCEPTION: " + e);
+                Log.d("NETWORK THREAD", "PING EXCEPTION: " + e);
             }
 
             // Why do I need this, even though this is a Void method?
