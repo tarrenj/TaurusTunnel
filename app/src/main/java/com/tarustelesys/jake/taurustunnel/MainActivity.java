@@ -7,22 +7,64 @@ import android.os.AsyncTask;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
+import android.view.View.OnKeyListener;
+
+import android.widget.TextView;
+
+
 public class MainActivity extends AppCompatActivity {
+
+    // Initialize variables
+    private EditText givenText;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        // Instantiate the key listener for the server_address text box
+        server_address_listener();
     }
+
+    // A key listener to watch the server_text box
+    public void server_address_listener() {
+        // Get the entered text
+        givenText = (EditText) findViewById(R.id.server_address);
+        givenText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                Log.d("UI EVENT", "Server address: " + givenText.getText());
+                return true;
+            }
+        });
+    }
+
+//    public void server_text_listener() {
+//        // Get the entered text
+//        givenText = (EditText) findViewById(R.id.server_address);
+//
+//        // Create a key listener  Fucking callbacks!!!
+//        givenText.setOnKeyListener(new OnKeyListener() {
+//            public boolean onKey(View v, int keyCode, KeyEvent event) {
+//                // If enter
+//                if ((event.getAction() == KeyEvent.ACTION_DOWN) && (keyCode == KeyEvent.KEYCODE_ENTER)) {
+//                    Log.d("UI EVENT", "Server address: " + givenText.getText());
+//                    return true;
+//                }
+//                return false;
+//            }
+//        });
+//    }
 
     // A simple method to test to make sure my button is working..
     public void test_button(View view) {
-        Log.d("Button test", "Button seems to be working fine...");
+        Log.d("UI EVENT", "Button seems to be working fine...");
     }
 
     public void ping_server(View view) {
