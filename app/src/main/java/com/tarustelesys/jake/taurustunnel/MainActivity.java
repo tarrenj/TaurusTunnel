@@ -34,18 +34,17 @@ public class MainActivity extends AppCompatActivity {
     // A key listener to watch the server_text box
     public void server_address_listener() {
         //throw new Error("Things are happening");
-          // Get the entered text
-          givenText = (EditText) findViewById(R.id.server_address);
-        Log.d("UI EVENT", "server_address_listener called: " + givenText.getText());
-          givenText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
-              @Override
-              public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-                  Log.d("UI EVENT", "Server address: " + givenText.getText());
-                  return true;
-              }
-          });
+        // Get the entered text
+        givenText = (EditText) findViewById(R.id.target_textbox);
+        Log.d("UI EVENT", "server_address_listener called");
+        givenText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                Log.d("UI EVENT", "Server address: " + givenText.getText());
+                return true;
+            }
+        });
     }
-
 
     // A simple method to test to make sure my button is working..
     public void test_button(View view) {
